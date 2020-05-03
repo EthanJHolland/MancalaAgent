@@ -1,5 +1,5 @@
 import copy
-from utils import display
+from display_utils import display_board
 
 class Board:
     """ represents a mancala board
@@ -50,7 +50,7 @@ class Board:
                         | 13 |---|---|---|---|---|---|  6 |
                         |    | 0 | 1 | 2 | 3 | 4 | 5 |    |
                         ===================================
-                result: [10, 1, 2, 3, 4, 5]
+                result: [0, 1, 2, 3, 4, 5]
         """
         return self.board[Board.PLAYER][:self.length]
     
@@ -124,40 +124,6 @@ class Board:
         return '|'.join[','.join(self.player_row()), ','.join(self.opponent_row()), self.player_score(), self.opponent_score()] 
 
     def print_board(self):
-        """ prints the board 
-        ===================================
-        |    | 12| 11| 10| 9 | 8 | 7 |    |
-        | 13 |---|---|---|---|---|---|  6 |
-        |    | 0 | 1 | 2 | 3 | 4 | 5 |    |
-        ===================================
-        """
-        def place(num, num_spaces, justify_left=False):
-            extra = num_spaces - len(str(num))
-
-            if extra % 2 == 0:
-                return ' ' * (extra // 2) + str(num) + ' ' * (extra // 2)
-            else:
-                return ' ' * (extra // 2 + (not justify_left)) + str(num) + ' ' * (extra // 2 + justify_left)
-        
-        def row_string(row):
-            return VERT + ' ' * end_width + VERT + VERT.join([place(n, cup_width) for n in row]) + VERT + ' ' * end_width + VERT
-
-
-        end_width = 4
-        cup_width = 3
-        border_len = 2 * (end_width + 1) + self.length * (cup_width + 1) + 1
-
-        VERT = '|'
-        HBORDER = '='
-        HMID = '-'
-
-        out = [
-            HBORDER * border_len,
-            row_string(reversed(self.opponent_row())),  # reverse opponents row to see from player's perspective
-            VERT + place(self.opponent_score(), end_width, True) + (VERT + HMID * 3) * self.length + VERT + place(self.player_score(), end_width) + VERT,
-            row_string(self.player_row()),
-            HBORDER * border_len
-        ]
-
-        display(out, self.animate)
+        """ prints the board """
+        display_board(self.player_row(), self.opponent_row(), self.player_score(), self.opponent_score(), self.animate)
     
