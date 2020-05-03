@@ -75,7 +75,7 @@ class Board:
         return [index for index, marbles in enumerate(self.player_row()) if marbles > 0]
 
     def successor(self, action):
-        """ returns a new board state with the result of the player taking the given action """
+        """ returns a new board state with the result of the player taking the given action as well as a boolea which is true iff the player keeps their turn (landed in their goal) """
         assert action >= 0 and action < self.length and self.board[Board.PLAYER][action] > 0
 
         boardobj = copy.copy(self)
@@ -102,9 +102,9 @@ class Board:
 
             if marbles == 0:
                 if r == Board.PLAYER and c == self.length:  # ended in goal
-                    return (boardobj, Board.PLAYER)
+                    return (boardobj, True)
                 elif boardobj.board[r][c] == 1:  # ended in previously empty cup
-                    return (boardobj, Board.OPPONENT)
+                    return (boardobj, False)
                 else:  # ended in non-empty cup so pick up marbles
                     marbles = boardobj.board[r][c]
                     boardobj.board[r][c] = 0
@@ -118,6 +118,10 @@ class Board:
         flipped.board[Board.OPPONENT] = self.board[Board.PLAYER]
 
         return flipped
+    
+    def unique_string(self):
+        """ returns a string such that two boards generate the same string iff they have the same board size and the same marble configuration (including goals) """
+        return '|'.join[','.join(self.player_row()), ','.join(self.opponent_row()), self.player_score(), self.opponent_score()] 
 
     def print_board(self):
         """ prints the board 
