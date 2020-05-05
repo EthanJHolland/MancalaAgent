@@ -4,15 +4,15 @@ from display_utils import option_list_to_text
 class HumanAgent(Agent):
     def move(self, board):
         choice = None
-        options = list(map(str, board.actions()))
+        options = [chr(i + ord('A')) for i in board.actions()]
         option_str = option_list_to_text(options)
 
         while choice not in options:
             if choice:
                 print(f'{choice} is not a valid move')
-            choice = input(f'your move ({option_str}): ')
+            choice = input(f'your move ({option_str}): ').strip().upper()
         
-        return int(choice)
+        return ord(choice) - ord('A')
     
     def name(self):
         return 'human'

@@ -54,7 +54,7 @@ def display_board(bottom_row, top_row, right_score, left_score, animate, options
     ]
 
     if options:
-        option_strings = [(_center_text(i, cup_width) if i in options else (' ' * cup_width)) for i in range(len(bottom_row))]
+        option_strings = [(_center_text(chr(i + ord('A')), cup_width) if i in options else (' ' * cup_width)) for i in range(len(bottom_row))]
         out.append(' ' * (end_width + 2) + ' '.join(option_strings))
 
     _display(out, animate)
