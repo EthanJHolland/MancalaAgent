@@ -73,6 +73,10 @@ class Board:
     def actions(self):
         """ gives a list of valid actions for the player under the board state """
         return [index for index, marbles in enumerate(self.player_row()) if marbles > 0]
+    
+    def opponent_actions(self):
+        """ gives a list of valid actions for the opponent under the board state """
+        return [index for index, marbles in enumerate(self.opponent_row()) if marbles > 0]
 
     def successor(self, action):
         """ returns a new board state with the result of the player taking the given action as well as a boolea which is true iff the player keeps their turn (landed in their goal) """
@@ -123,7 +127,10 @@ class Board:
         """ returns a string such that two boards generate the same string iff they have the same board size and the same marble configuration (including goals) """
         return '|'.join[','.join(self.player_row()), ','.join(self.opponent_row()), self.player_score(), self.opponent_score()] 
 
-    def print_board(self):
-        """ prints the board """
-        display_board(self.player_row(), self.opponent_row(), self.player_score(), self.opponent_score(), self.animate)
+    def print_board(self, flip=False, with_options=True):
+        """ prints the board, from a flipped perspective iff flip and also displaying options for the bottom player iff with_options """
+        if flip:
+            display_board(self.opponent_row(), self.player_row(), self.opponent_score(), self.player_score(), self.animate, self.opponent_actions() if with_options else [])
+        else:
+            display_board(self.player_row(), self.opponent_row(), self.player_score(), self.opponent_score(), self.animate, self.actions() if with_options else [])
     
