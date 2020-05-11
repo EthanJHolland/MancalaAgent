@@ -6,12 +6,15 @@ from agent_greedy import GreedyAgent
 from agent_human import HumanAgent
 from agent_minimax import MinimaxAgent
 
-def match(agents, rounds=1, verbose=True):
+def match(agents, rounds=1, verbose=None):
     """ simulate a match between two agents """
     assert rounds > 0
     assert len(agents) == 2
     assert not (agents[0].is_human() and agents[1].is_human())  # at most one human agent
-    assert not verbose or (not agents[0].is_human() and not agents[1].is_human())  # if there is a human agent must be verbose
+
+    if verbose is None:
+        verbose = agents[0].is_human() or agents[1].is_human() or rounds == 1  # if not explicitely set, verbose if there is a human agent or only 1 round
+    assert verbose or (not agents[0].is_human() and not agents[1].is_human())  # if there is a human agent must be verbose
 
     if agents[1].is_human(): 
         agents.reverse()  # human is always bottom player
@@ -54,7 +57,7 @@ def match(agents, rounds=1, verbose=True):
         print(f"\nit's a tie! {match_score[0]} to {match_score[1]}")
     else:
         winner = 0 if match_score[0] > match_score[1] else 1
-        print(f'\n{agents[winner].name()} ({["bottom", "top"][winner]} player) wins the match {max(match_score)} to {min(match_score)}!')
+        print(f'\n{agents[winner].name()} wins the match {max(match_score)} to {min(match_score)}!')
 
 def solitaire():
     """ simulate an agent playing a solitaire version of mancala in which the agent gets to keep making moves until there are no marbles on its side """
@@ -70,8 +73,7 @@ def solitaire():
 
 def main():
     agents = [MinimaxAgent(horizon=3), GreedyAgent()]
-
-    match(agents, verbose=False, rounds=1000)
+    match(agents)
 
 if __name__ == "__main__":
     main()
