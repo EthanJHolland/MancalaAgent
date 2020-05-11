@@ -1,5 +1,6 @@
 import random
 from agent import Agent
+from utils_agent import random_optimal
 
 class GreedyAgent(Agent):
     def move(self, board):
@@ -8,11 +9,8 @@ class GreedyAgent(Agent):
         for action in board.actions():
             result, _ = board.successor(action)
             options.append((action, result.score()))
-                
-        best_score = max([score for _, score in options])
-        best_actions = [action for action, score in options if score == best_score]
 
-        return random.choice(best_actions)
+        return random_optimal(options, order=max)[0]
 
     def name(self):
         return 'greedy agent'

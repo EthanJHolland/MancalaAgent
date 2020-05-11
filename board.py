@@ -1,5 +1,5 @@
 import copy
-from display_utils import display_board
+from utils_display import display_board
 
 class Board:
     """ represents a mancala board
@@ -115,22 +115,21 @@ class Board:
                 
             r, c = next(r, c)
 
-    def flip(self):
-        """ gives the board from the perspective of the opponent """
-        flipped = copy.copy(self)
-        flipped.board[Board.PLAYER] = self.board[Board.OPPONENT]
-        flipped.board[Board.OPPONENT] = self.board[Board.PLAYER]
-
-        return flipped
+    def flip(self, mutate=False):
+        """ gives the board from the perspective of the opponent, returning a new board object unless mutate is true """
+        obj = self if mutate else copy.copy(self)
+        obj.board.reverse()
+        return obj
     
     def unique_string(self):
         """ returns a string such that two boards generate the same string iff they have the same board size and the same marble configuration (including goals) """
         return '|'.join[','.join(self.player_row()), ','.join(self.opponent_row()), self.player_score(), self.opponent_score()] 
 
-    def print_board(self, flip=False, with_options=True):
-        """ prints the board, from a flipped perspective iff flip and also displaying options for the bottom player iff with_options """
-        if flip:
-            display_board(self.opponent_row(), self.player_row(), self.opponent_score(), self.player_score(), self.animate, self.opponent_actions() if with_options else [])
-        else:
-            display_board(self.player_row(), self.opponent_row(), self.player_score(), self.opponent_score(), self.animate, self.actions() if with_options else [])
+    def print_board(self, flip=False, with_options=False, silent=False):
+        """ if silent does nothing, otherwise prints the board, from a flipped perspective iff flip and also displaying options for the bottom player iff with_options """
+        if not silent:
+            if flip:
+                display_board(self.opponent_row(), self.player_row(), self.opponent_score(), self.player_score(), self.animate, self.opponent_actions() if with_options else [])
+            else:
+                display_board(self.player_row(), self.opponent_row(), self.player_score(), self.opponent_score(), self.animate, self.actions() if with_options else [])
     

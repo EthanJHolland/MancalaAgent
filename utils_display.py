@@ -58,3 +58,7 @@ def display_board(bottom_row, top_row, right_score, left_score, animate, options
         out.append(' ' * (end_width + 2) + ' '.join(option_strings))
 
     _display(out, animate)
+
+def print_(*objects, sep=' ', end='\n', silent=False):
+    if not silent:
+        print(*objects, sep=' ', end='\n')
