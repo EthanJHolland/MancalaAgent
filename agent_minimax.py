@@ -9,10 +9,10 @@ class MinimaxAgent(Agent):
         self.horizon = horizon
 
     def move(self, board):
-        best_actions, _ = self.minimax(board, depth=0, is_min=False)
+        best_actions, _ = self.minimax(board, depth=0)
         return random.choice(best_actions)
     
-    def minimax(self, board, depth, is_min):
+    def minimax(self, board, depth):
         if depth == self.horizon or board.is_complete():
             return ([], self.evaluate(board))
         
@@ -20,17 +20,17 @@ class MinimaxAgent(Agent):
         for action in board.actions():
             next_board, keep_turn = board.successor(action)
             if keep_turn:
-                _, value = self.minimax(next_board, depth + 1, is_min)
+                _, value = self.minimax(next_board, depth + 1)
             else:
-                _, value = self.minimax(next_board.flip(mutate=True), depth + 1, not is_min)
+                _, value = self.minimax(next_board.flip(mutate=True), depth + 1)
                 value *= -1  # need to negate score value from opposite player's persepctive
 
             options.append((action, value))
         
         if not options:  # no valid moves - switch turn without incrementing depth
-            return self.minimax(board.flip(mutate=True), depth, not is_min)
+            return self.minimax(board.flip(mutate=True), depth)
 
-        return find_optimal(options, order=min if is_min else max)
+        return find_optimal(options, order=max)
     
     def evaluate(self, board):
         """ approximates the value of a board state to the player with the score """
