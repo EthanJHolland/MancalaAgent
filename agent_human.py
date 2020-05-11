@@ -1,5 +1,5 @@
 from agent import Agent
-from display_utils import option_list_to_text
+from utils_display import option_list_to_text
 
 class HumanAgent(Agent):
     def move(self, board):
