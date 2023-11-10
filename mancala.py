@@ -5,6 +5,7 @@ from utils_display import print_
 from agent_greedy import GreedyAgent
 from agent_human import HumanAgent
 from agent_minimax import MinimaxAgent
+from agent_keepturn import KeepTurnAgent
 
 def match(agents, rounds=1, verbose=None):
     """ simulate a match between two agents """
@@ -26,7 +27,8 @@ def match(agents, rounds=1, verbose=None):
         # intial setup
         print_(f'round {round + 1}:', silent=not verbose)
         board = Board()
-        turn = random.choice([0, 1])
+        turn = 1
+        # turn = random.choice([0, 1])
 
         while not board.is_complete():
             if not board.actions():  # forfeit turn if no moves
@@ -72,8 +74,8 @@ def solitaire():
         board.print_board()
 
 def main():
-    agents = [MinimaxAgent(horizon=3), GreedyAgent()]
-    match(agents)
+    agents = [KeepTurnAgent(), MinimaxAgent(horizon=2)]
+    match(agents, rounds=1000)
 
 if __name__ == "__main__":
     main()

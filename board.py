@@ -123,7 +123,7 @@ class Board:
     
     def unique_string(self):
         """ returns a string such that two boards generate the same string iff they have the same board size and the same marble configuration (including goals) """
-        return '|'.join[','.join(self.player_row()), ','.join(self.opponent_row()), self.player_score(), self.opponent_score()] 
+        return f"{','.join(map(str, self.player_row()))}|{','.join(map(str, self.opponent_row()))}|{self.player_score()}|{self.opponent_score()}"
 
     def print_board(self, flip=False, with_options=False, silent=False):
         """ if silent does nothing, otherwise prints the board, from a flipped perspective iff flip and also displaying options for the bottom player iff with_options """
